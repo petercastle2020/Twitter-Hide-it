@@ -1,0 +1,25 @@
+{
+  "name": "Twitter Hide it",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "Uses keywords provided by You to remove posts you don't wanna see on Twitter's website.",
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.twitter.com/*"],
+      "js": ["content-script.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icons/hidden16.png",
+    "32": "icons/hidden32.png",
+    "48": "icons/hidden64.png",
+    "128": "icons/hidden128.png"
+  }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>Twitter Hide it</title>
+  </head>
+  <body>
+    <div class="heading-div">
+      <h1>Twitter Hide it</h1>
+      <h2>1. Choose a word.</h2>
+      <h2>2. Press save button.</h2>
+      <h2>2. Don't see it again.</h2>
+    </div>
+    <input
+      id="keyword-input"
+      type="text"
+      placeholder="Key word..."
+      style="
+        padding: 8px;
+        font-size: 1.2em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-top: 16px;
+        margin-bottom: 16px;
+      "
+    />
+    <div>
+      <button
+        id="reset-btn"
+        type="button"
+        style="
+          background-color: #1da1f2;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-size: 1.2em;
+          cursor: pointer;
+        "
+      >
+        Reset
+      </button>
+      <button
+        id="save-btn"
+        type="button"
+        style="
+          background-color: #1da1f2;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-size: 1.2em;
+          cursor: pointer;
+        "
+      >
+        Save
+      </button>
+    </div>
+    <div id="save-detected" class="hidden">Saved!</div>
+    <div id="reset-detected" class="hidden">Reset Success!</div>
+  </body>
+  <!-- <body>
+    <h1>Twitter Hide it</h1>
+    <h2>1. Choose a word.</h2>
+    <h2>2. Press save button.</h2>
+    <input id="keyword-input" type="text" placeholder="Key word..." />
+    <button id="save-btn" type="button">Save</button>
+  </body> -->
+  <footer>
+    <!-- <a href="https://www.flaticon.com/free-icons/hide" title="hide icons"
+      >Hide icons created by Uniconlabs - Flaticon</a
+    > -->
+  </footer>
+  <script src="popup.js"></script>
+</html>
