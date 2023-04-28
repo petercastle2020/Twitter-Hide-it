@@ -45,10 +45,22 @@ const resetLocalStorage = () => {
   }, 2000);
 };
 
+const trendingDisplay = () => {};
+
 document.addEventListener("DOMContentLoaded", () => {
   const saveBtn = document.getElementById("save-btn");
   const inputField = document.getElementById("keyword-input");
   const resetBtn = document.getElementById("reset-btn");
+  const checkbox = document.getElementById("checkbox-input");
+
+  chrome.storage.local.get("hideTrending", (result) => {
+    // If the value is present in storage, update the checkbox
+    if (result.hideTrending) {
+      checkbox.checked = true;
+    } else {
+      checkbox.checked = false;
+    }
+  });
 
   saveBtn.addEventListener("click", () => {
     saveKeyWord(inputField.value);
@@ -57,5 +69,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   resetBtn.addEventListener("click", () => {
     resetLocalStorage();
+  });
+
+  checkbox.addEventListener("change", () => {
+    const isChecked = checkbox.checked;
+    const newState = isChecked ? true : false;
+
+    chrome.storage.local.set({ hideTrending: newState }, () => {
+      console.log(`Value saved! Updated state: ${newState}`);
+      checkbox.checked = newState;
+
+      if (isChecked) {
+        chrome.runtime.sendMessage({ action: "hide" });
+      } else {
+        chrome.runtime.sendMessage({ action: "show" });
+      }
+    });
   });
 });

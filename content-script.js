@@ -87,9 +87,9 @@ window.requestAnimationFrame(waitForArticle);
 // Wait for section
 const waitForSection = () => {
   const sectionEl = document.querySelector("section:first-of-type");
+
   if (sectionEl) {
     console.log("section loaded.", sectionEl);
-    sectionObs = sectionEl;
     return sectionEl;
     // Do something with myElement
   } else {
@@ -98,6 +98,74 @@ const waitForSection = () => {
 };
 
 window.requestAnimationFrame(waitForSection);
+
+const waitForTrending = () => {
+  const trendingEl = document.querySelector(
+    '[aria-label="Timeline: Trending now"]'
+  );
+
+  if (trendingEl) {
+    console.log("TRENDING LOADED", trendingEl);
+    return trendingEl;
+    // trendingEl.style.visibility = "hidden";
+  } else {
+    window.requestAnimationFrame(waitForTrending);
+  }
+};
+
+window.requestAnimationFrame(waitForTrending);
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  console.log(
+    sender.tab
+      ? "from a content script:" + sender.tab.url
+      : "from the extension"
+  );
+  if (request.greeting === "hello") sendResponse({ farewell: "goodbye" });
+});
+
+// Trending Local storage.
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("ADD LISTENER CONTENT SCRIPT LLJSDLKJAS");
+  console.log("--->", message);
+  let trendingEl = waitForTrending();
+  console.log(trendingEl);
+  if (message.action === "hide") {
+    trendingEl.style.visibility = "hidden";
+  } else if (message.action === "show") {
+    trendingEl.style.visibility = "visible";
+  }
+});
+
+// Send a message to the background script when the content script is ready
+
+// Listen for messages from the background script
+
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   console.log(
+//     "message received IN CONTENT SCRIPT TO UPDATE VIEW",
+//     message.data
+//   );
+//   if (message.action === "hide") {
+//     let trendingEl = waitForTrending();
+//     trendingEl.style.visibility = "hidden";
+//   } else if (message.action === "show") {
+//     let trendingEl = waitForTrending();
+//     trendingEl.style.visibility = "visible";
+//   }
+// });
+// console.log("I was called.");
+
+// chrome.storage.local.get("hideTrending", (result) => {
+//   // If the value is present in storage, update the checkbox
+//   console.log(trendingEl);
+//   if (result.hideTrending) {
+//     trendingEl.style.visibility = "hidden";
+//   } else {
+//     trendingEl.style.visibility = "visible";
+//   }
+// });
 
 window.addEventListener("scroll", () => {
   if (window.innerHeight + window.screenY >= document.body.offsetHeight) {

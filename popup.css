@@ -19,8 +19,15 @@ div {
   flex-direction: column;
 }
 
+.checkbox-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 .heading-div h1 {
   font-size: 1.5em;
+  color: #1da1f2;
 }
 
 .heading-div h2 {
