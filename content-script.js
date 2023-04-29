@@ -1,10 +1,3 @@
-const myFunction = () => {
-  console.log("content-script.js being called on load.");
-};
-myFunction();
-
-// chrome.storage.local.clear();
-
 const getArticleArray = () => {
   console.log("getarticle being called.");
   const articleEl = document.getElementsByTagName("article");
@@ -24,12 +17,12 @@ const handleDOMChange = (ArrayForLoop) => {
   // Retrieve the stored values from the storage
   chrome.storage.local.get({ keywordsArray: [] }, (result) => {
     const keywordsArray = result.keywordsArray;
-
+    console.log(keywordsArray, "<--- LIST KEYWORDS");
     // checking for article text
     console.log("NUMBER OF ITEM IN THE ARTICLE ARRAY", ArrayForLoop.length);
     for (let i = 0; i < ArrayForLoop.length; i++) {
-      const test = ArrayForLoop[i].querySelector("[data-testid='tweetText']");
-      console.log(test.children[0].innerHTML);
+      // const test = ArrayForLoop[i].querySelector("[data-testid='tweetText']");
+      // console.log(test.children[0].innerHTML);
       if (ArrayForLoop[i].getAttribute("data-rendered") === "true") {
         console.log(
           ArrayForLoop[i],
@@ -99,73 +92,59 @@ const waitForSection = () => {
 
 window.requestAnimationFrame(waitForSection);
 
-const waitForTrending = () => {
-  const trendingEl = document.querySelector(
-    '[aria-label="Timeline: Trending now"]'
-  );
+// Listen from changes in the extension UI
+const MessageListener = (element) => {
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("onMessage.addListener called in content-script.");
+    console.log("--->", message);
+    let trendingEl = element;
+    console.log(trendingEl);
+    if (message.action === "hide") {
+      trendingEl.style.visibility = "hidden";
+      sendResponse("Trending tab set to hidden.");
+    } else if (message.action === "show") {
+      trendingEl.style.visibility = "visible";
+      sendResponse("Trending tab set to NOT hidden.");
+    }
+  });
+};
 
-  if (trendingEl) {
-    console.log("TRENDING LOADED", trendingEl);
-    return trendingEl;
-    // trendingEl.style.visibility = "hidden";
+const waitForTrending = () => {
+  // Twitter Trending tab just show up on 1022 or greater.
+  if (window.innerWidth >= 1022) {
+    const trendingEl = document.querySelector(
+      '[aria-label="Timeline: Trending now"]'
+    );
+    if (trendingEl) {
+      chrome.storage.local.get("hideTrending", (result) => {
+        if (result.hideTrending) {
+          trendingEl.style.visibility = "hidden";
+        }
+      });
+      // set up the Listener to listen to popup.js
+      MessageListener(trendingEl);
+    } else {
+      window.requestAnimationFrame(() => {
+        setTimeout(() => {
+          waitForTrending();
+        }, 1000);
+      });
+    }
   } else {
-    window.requestAnimationFrame(waitForTrending);
+    console.log(
+      "window.innerWidth lower than 1022px, Trending tab not available."
+    );
   }
 };
 
+// call the waitForTrending function initially
 window.requestAnimationFrame(waitForTrending);
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log(
-    sender.tab
-      ? "from a content script:" + sender.tab.url
-      : "from the extension"
-  );
-  if (request.greeting === "hello") sendResponse({ farewell: "goodbye" });
+window.addEventListener("resize", () => {
+  console.log("Viewport size changed!");
+  // call the waitForTrending function when the viewport size changes
+  waitForTrending();
 });
-
-// Trending Local storage.
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("ADD LISTENER CONTENT SCRIPT LLJSDLKJAS");
-  console.log("--->", message);
-  let trendingEl = waitForTrending();
-  console.log(trendingEl);
-  if (message.action === "hide") {
-    trendingEl.style.visibility = "hidden";
-  } else if (message.action === "show") {
-    trendingEl.style.visibility = "visible";
-  }
-});
-
-// Send a message to the background script when the content script is ready
-
-// Listen for messages from the background script
-
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//   console.log(
-//     "message received IN CONTENT SCRIPT TO UPDATE VIEW",
-//     message.data
-//   );
-//   if (message.action === "hide") {
-//     let trendingEl = waitForTrending();
-//     trendingEl.style.visibility = "hidden";
-//   } else if (message.action === "show") {
-//     let trendingEl = waitForTrending();
-//     trendingEl.style.visibility = "visible";
-//   }
-// });
-// console.log("I was called.");
-
-// chrome.storage.local.get("hideTrending", (result) => {
-//   // If the value is present in storage, update the checkbox
-//   console.log(trendingEl);
-//   if (result.hideTrending) {
-//     trendingEl.style.visibility = "hidden";
-//   } else {
-//     trendingEl.style.visibility = "visible";
-//   }
-// });
 
 window.addEventListener("scroll", () => {
   if (window.innerHeight + window.screenY >= document.body.offsetHeight) {
