@@ -3,15 +3,11 @@
 
 // save the key word
 const saveKeyWord = (inputValue) => {
-  console.log("I am working saveKey");
-  console.log(inputValue);
   // get keyword from input
   const keyword = inputValue.toLowerCase();
   // Retrieve the stored values from the storage
   chrome.storage.local.get({ keywordsArray: [] }, (result) => {
-    console.log(result.keywordsArray);
     const keywordsArray = result.keywordsArray;
-    console.log(keywordsArray);
     if (keywordsArray.includes(keyword)) {
       return;
     }
@@ -64,8 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
           currentWindow: true,
         },
         (tabs) => {
-          console.log(tabs);
-          console.log(message);
           chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
             resolve(response);
           });

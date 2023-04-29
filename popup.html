@@ -13,58 +13,62 @@
       <h2>1. Choose a word.</h2>
       <h2>2. Press save button.</h2>
       <h2>3. Don't see it again.</h2>
-      <div class="checkbox-div">
-        <input type="checkbox" id="checkbox-input" />
-        <p>Hide what's happening tab</p>
+    </div>
+    <div class="bottom-div">
+      <div>
+        <div class="checkbox-div">
+          <input type="checkbox" id="checkbox-input" />
+          <p>Hide what's happening tab</p>
+        </div>
       </div>
-    </div>
-    <input
-      id="keyword-input"
-      type="text"
-      placeholder="Key word..."
-      style="
-        padding: 8px;
-        font-size: 1.2em;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-top: 16px;
-        margin-bottom: 16px;
-      "
-    />
-    <div>
-      <button
-        id="reset-btn"
-        type="button"
+      <input
+        id="keyword-input"
+        type="text"
+        placeholder="Key word..."
         style="
-          background-color: #1da1f2;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
+          padding: 8px;
           font-size: 1.2em;
-          cursor: pointer;
-        "
-      >
-        Reset
-      </button>
-      <button
-        id="save-btn"
-        type="button"
-        style="
-          background-color: #1da1f2;
-          color: white;
-          border: none;
-          padding: 8px 16px;
+          border: 1px solid #ccc;
           border-radius: 4px;
-          font-size: 1.2em;
-          cursor: pointer;
+          margin-top: 16px;
+          margin-bottom: 16px;
         "
-      >
-        Save
-      </button>
+      />
+      <div>
+        <button
+          id="reset-btn"
+          type="button"
+          style="
+            background-color: #1da1f2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 1.2em;
+            cursor: pointer;
+          "
+        >
+          Reset
+        </button>
+        <button
+          id="save-btn"
+          type="button"
+          style="
+            background-color: #1da1f2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 1.2em;
+            cursor: pointer;
+          "
+        >
+          Save
+        </button>
+      </div>
+      <div id="save-detected" class="hidden">Saved!</div>
+      <div id="reset-detected" class="hidden">Reset Success!</div>
     </div>
-    <div id="save-detected" class="hidden">Saved!</div>
-    <div id="reset-detected" class="hidden">Reset Success!</div>
   </body>
   <footer>
     <!-- <a href="https://www.flaticon.com/free-icons/hide" title="hide icons"
