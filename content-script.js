@@ -30,6 +30,32 @@ const handleDOMChange = (articleArray) => {
   });
 };
 
+// run once updating the UI removing the latest word without the need to reload / scroll of the main filter
+const updateUI = (keyword) => {
+  const articleEl = document.getElementsByTagName("article");
+  const articleArray = Array.from(articleEl);
+
+  if (articleArray.length > 0) {
+    for (let i = 0; i < articleArray.length; i++) {
+      const spanTextParentDiv = articleArray[i].querySelector(
+        "[data-testid='tweetText']"
+      );
+      // checking for the matches
+      if (spanTextParentDiv) {
+        const spanText = spanTextParentDiv.children[0].innerHTML;
+        // sorting
+        const regex = new RegExp("\\b" + keyword + "\\b", "i");
+        if (regex.test(spanText)) {
+          articleArray[i].style.display = "none";
+        }
+      }
+    }
+  } else {
+    window.requestAnimationFrame(updateUI);
+    return;
+  }
+};
+
 // Wait for articles
 const waitForArticle = () => {
   const articleEl = document.getElementsByTagName("article");
@@ -55,6 +81,10 @@ const MessageListener = (element) => {
     } else if (message.action === "show") {
       trendingEl.style.visibility = "visible";
       sendResponse("Trending tab set to NOT hidden.");
+    } else if (message.action === "updateUI") {
+      const keyword = message.keyword;
+      updateUI(keyword);
+      sendResponse("updateUI action triggered.");
     }
   });
 };

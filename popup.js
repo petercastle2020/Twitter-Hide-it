@@ -1,5 +1,19 @@
-// console.log script for looking up the chrome.storage.local
-// chrome.storage.local.get(console.log)
+// get the current tab to send a message to content-script.
+const sendMessageToContentScript = (message) => {
+  return new Promise((resolve) => {
+    chrome.tabs.query(
+      {
+        active: true,
+        currentWindow: true,
+      },
+      (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
+          resolve(response);
+        });
+      }
+    );
+  });
+};
 
 // save the key word
 const saveKeyWord = (inputValue) => {
@@ -16,6 +30,12 @@ const saveKeyWord = (inputValue) => {
     // Store the updated array in the storage
     chrome.storage.local.set({ keywordsArray: keywordsArray }, () => {
       console.log("value saved!", `updated Array: ${keywordsArray}`);
+      // send message to content-script to run again with the new word included.
+      sendMessageToContentScript({ action: "updateUI", keyword: keyword }).then(
+        (response) => {
+          console.log(response);
+        }
+      );
       // Show "Click Detected" div temporarily
       const clickDetectedDiv = document.getElementById("save-detected");
       clickDetectedDiv.classList.remove("hidden");
@@ -50,23 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
   resetBtn.addEventListener("click", () => {
     resetLocalStorage();
   });
-
-  // get the current tab to send a message to content-script.
-  const sendMessageToContentScript = (message) => {
-    return new Promise((resolve) => {
-      chrome.tabs.query(
-        {
-          active: true,
-          currentWindow: true,
-        },
-        (tabs) => {
-          chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
-            resolve(response);
-          });
-        }
-      );
-    });
-  };
 
   chrome.storage.local.get("hideTrending", (result) => {
     // If the value is present in storage, update the checkbox
