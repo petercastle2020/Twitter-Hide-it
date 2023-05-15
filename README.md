@@ -5,16 +5,16 @@ Whether you want to avoid spoilers for a TV show or movie, or simply want to hid
 Please note that the extension is not yet available on the Chrome Web Store, but it can be installed and used locally on your computer.
 
 ## Features
- > Easily hides tweets that contain specific keywords chosen by the user.
- > Simple and user-friendly popup window to add and remove keywords.
- > Compatible with the Google Chrome browser.
- > Lightweight and easy to install.
+ - Easily hides tweets that contain specific keywords chosen by the user.
+ - Simple and user-friendly popup window to add and remove keywords.
+ - Compatible with the Google Chrome browser.
+ - Lightweight and easy to install.
 
 ## Installation
-1 - Open Google Chrome and navigate to the Extensions page (chrome://extensions/).
-2 - Enable "Developer mode" by clicking the toggle switch on the top right corner of the page.
-3 - Click the "Load unpacked" button and select the directory where your extension is located.
-4 -Once you've selected the directory, the extension should appear in your list of installed extensions.
+1. Open Google Chrome and navigate to the Extensions page (chrome://extensions/).
+2. Enable "Developer mode" by clicking the toggle switch on the top right corner of the page.
+3. Click the "Load unpacked" button and select the directory where your extension is located.
+4. Once you've selected the directory, the extension should appear in your list of installed extensions.
 
 ## Usage
 Once installed, Twitter-Hide-it can be accessed through the Chrome extensions menu. To use the extension, simply click on the icon and add any keywords that you want to hide. The extension will then automatically hide any tweets containing those keywords.
