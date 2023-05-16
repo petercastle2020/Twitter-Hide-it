@@ -84,9 +84,6 @@ const waitForArticle = () => {
   const articleEl = document.getElementsByTagName("article");
   const articleArray = Array.from(articleEl);
 
-  const userEl = document.querySelector("[data-testid='User-Name']");
-  console.log(userEl.textContent);
-
   if (articleArray.length > 0) {
     handleDOMChange(articleArray);
   } else {
