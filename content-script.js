@@ -1,13 +1,12 @@
-// Function that runs every time there is a change in the DOM
 const handleDOMChange = (articleArray) => {
   // Retrieve the stored values from the storage
   chrome.storage.local.get({ keywordsArray: [] }, (result) => {
     const keywordsArray = result.keywordsArray;
 
+    // check both arrays for values.
     if (!Array.isArray(keywordsArray) || keywordsArray.length === 0) {
       return;
     }
-
     if (!Array.isArray(articleArray) || articleArray.length === 0) {
       return;
     }
@@ -15,11 +14,11 @@ const handleDOMChange = (articleArray) => {
     // loop the Article Array
     for (let i = 0; i < articleArray.length; i++) {
       if (!(articleArray[i] instanceof Element)) {
-        continue; // or throw an error or handle the case appropriately
+        continue;
       }
 
       if (articleArray[i].getAttribute("filtered-status") === "true") {
-        continue; // skip to the next iteration
+        continue; // skip to the next iteration on filtered items.
       }
 
       const spanTextParentDiv = articleArray[i].querySelector(
@@ -33,7 +32,6 @@ const handleDOMChange = (articleArray) => {
       // checking for the matches
       if (spanTextParentDiv) {
         const spanText = spanTextParentDiv.children[0].textContent;
-        console.log(spanTextParentDiv.children[0].textContent);
 
         for (let j = 0; j < keywordsArray.length; j++) {
           const keyword = keywordsArray[j];
@@ -45,7 +43,7 @@ const handleDOMChange = (articleArray) => {
           if (regex.test(spanText)) {
             articleArray[i].style.display = "none";
           }
-          // set "filtered-status" for all the elements came through.
+          // set "filtered-status" for all the elements going through.
           articleArray[i].setAttribute("filtered-status", true);
         }
       }
@@ -57,6 +55,14 @@ const handleDOMChange = (articleArray) => {
 const updateUI = (keyword) => {
   const articleEl = document.getElementsByTagName("article");
   const articleArray = Array.from(articleEl);
+
+  // check both arrays for values.
+  if (!keyword) {
+    return;
+  }
+  if (!Array.isArray(articleArray) || articleArray.length === 0) {
+    return;
+  }
 
   if (articleArray.length > 0) {
     for (let i = 0; i < articleArray.length; i++) {
