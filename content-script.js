@@ -29,10 +29,24 @@ const handleDOMChange = (articleArray) => {
         continue;
       }
 
-      // checking for the matches
-      if (spanTextParentDiv) {
-        const spanText = spanTextParentDiv.children[0].textContent;
+      // GET raw text from span tags.
+      let spanText = "";
+      const children = spanTextParentDiv.children;
 
+      if (children.length > 1) {
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i];
+          const textContent = child.textContent.trim();
+          spanText += textContent + " ";
+        }
+
+        spanText = spanText.trim();
+      } else if (children.length === 1) {
+        spanText = children[0].textContent.trim();
+      }
+
+      // checking for the matches
+      if (spanText) {
         for (let j = 0; j < keywordsArray.length; j++) {
           const keyword = keywordsArray[j];
           if (typeof keyword !== "string") {
@@ -69,9 +83,25 @@ const updateUI = (keyword) => {
       const spanTextParentDiv = articleArray[i].querySelector(
         "[data-testid='tweetText']"
       );
+
+      // GET raw text from span tags.
+      let spanText = "";
+      const children = spanTextParentDiv.children;
+
+      if (children.length > 1) {
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i];
+          const textContent = child.textContent.trim();
+          spanText += textContent + " ";
+        }
+
+        spanText = spanText.trim();
+      } else if (children.length === 1) {
+        spanText = children[0].textContent.trim();
+      }
+
       // checking for the matches
-      if (spanTextParentDiv) {
-        const spanText = spanTextParentDiv.children[0].textContent;
+      if (spanText) {
         // sorting
         const regex = new RegExp("\\b" + keyword + "\\b", "i");
         if (regex.test(spanText)) {
